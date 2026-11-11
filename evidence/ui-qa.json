@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "timestamp": "2026-11-11T02:48:12.252Z",
+  "timestamp": "2026-11-11T05:33:36.563Z",
   "checks": [
     {
       "name": "home renders without a startup error",
@@ -77,15 +77,15 @@
   ],
   "errors": [],
   "screenshots": [
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-1440.png",
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/table-1440.png",
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/showdown-1440.png",
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-320.png",
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-390.png",
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-768.png",
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-1024.png",
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-1440.png",
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/table-390.png",
-    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-200-percent.png"
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/home-initial-1440.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/table-1440.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/showdown-1440.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/home-320.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/home-390.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/home-768.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/home-1024.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/home-1440.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/table-390.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/redesign/home-200-percent.png"
   ]
 }

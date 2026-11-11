@@ -7,7 +7,8 @@
   const { escapeHTML, formatChips } = Table;
   const STORAGE_KEY = 'ggpoker-playmoney-v1';
   const view = document.getElementById('main-view');
-  const modalRoot = document.getElementById('modal-root');
+  const dialog = document.getElementById('app-dialog');
+  const spinDialog = document.getElementById('spin-dialog');
   const navItems = [
     ['home', 'Home', 'home'],
     ['poker', 'Poker', 'cards'],
@@ -63,6 +64,9 @@
     pokerFilter: 'featured',
     tournamentFilter: 'all',
     leaderboardPeriod: 'week',
+    historyVariant: 'all',
+    historyFormat: 'all',
+    historyPeriod: 'recent10',
     search: '',
     tableSession: null,
     casinoSession: Casino.createSession('blackjack'),
@@ -101,20 +105,18 @@
   }
 
   function gameCard(config) {
-    const variantCards = config.variant === 'holdem' || config.variant === 'shortdeck' ? ['A♠', 'K♥'] : ['A♠', 'K♥', 'Q♣', 'J♦'];
     return `<article class="card game-card" style="--accent:${accents[config.accent] || accents.emerald}">
-      <div class="game-card-visual"><span class="tag format-pill ${config.format === 'spin' ? 'tag-gold' : ''}">${Table.formatNames[config.format]}</span><div class="mini-cards">${variantCards.map((card, index) => `<span class="mini-card ${index % 2 ? 'red' : ''}">${card}</span>`).join('')}</div></div>
-      <div class="game-card-body"><div class="game-title-row"><h3>${escapeHTML(config.name)}</h3><span class="tag">${config.max} max</span></div><p>${escapeHTML(config.description)}</p><div class="game-meta"><span>${icon('chip', 13)} ${config.blinds}</span><span>${icon('users', 13)} ${config.players}/${config.max}</span><span>${icon('motion', 13)} ${config.speed}</span></div><div class="game-card-footer"><div><small>Table buy-in</small><strong class="chip-label">${icon('chip', 14)} ${formatChips(config.buyIn)}</strong></div><button class="button button-primary button-small" data-action="join-table" data-id="${config.id}">${icon('play', 14)} Play now</button></div></div>
+      <div class="game-card-visual"><span class="tag format-pill ${config.format === 'spin' ? 'tag-gold' : ''}">${Table.formatNames[config.format]}</span>${root.GGScenes.format(config)}</div>
+      <div class="game-card-body"><div class="game-title-row"><h3>${escapeHTML(config.name)}</h3><span class="tag">${config.max} max</span></div><p>${escapeHTML(config.description)}</p><div class="game-meta"><span>${icon('chip', 13)} ${config.blinds}</span><span>${icon('users', 13)} ${config.players}/${config.max}</span><span>${icon('motion', 13)} ${config.speed}</span></div><div class="game-card-footer"><div><small>Table buy-in</small><strong class="chip-label">${icon('chip', 14)} ${formatChips(config.buyIn)}</strong></div><button class="button button-primary button-small" data-action="join-table" data-id="${config.id}" aria-label="Play ${escapeHTML(config.name)}">${icon('play', 14)} Play now</button></div></div>
     </article>`;
   }
 
   function homeView() {
     const featured = allTables().filter((table) => table.category.includes('featured')).slice(0, 3);
     const winRate = profile.stats.hands ? Math.round(profile.stats.wins / profile.stats.hands * 100) : 0;
-    return `${pageHead('Good to see you, David.', 'Your offline poker room is ready. Every chip is free and has no cash value.', `<button class="button button-secondary" data-route="history">${icon('history', 17)} Hand history</button>`)}
-      <section class="hero" aria-labelledby="hero-title"><div class="hero-content"><span class="eyebrow">Your table · your rules</span><h1 id="hero-title">Play the river.<br><span>Own the moment.</span></h1><p>Six-max Hold’em, fast-fold action, Omaha, Short Deck and more — with smart simulated opponents and unlimited offline play chips.</p><div class="hero-actions"><button class="button button-primary" data-action="join-table" data-id="emerald-6max">${icon('play', 18)} Take a seat</button><button class="button button-secondary" data-route="tournaments">${icon('trophy', 18)} Browse tournaments</button></div></div><div class="hero-art" aria-hidden="true"><div class="hero-card left">A<span>♠</span></div><div class="hero-chip"><div><strong>GG</strong><small>PLAY CHIPS</small></div></div><div class="hero-card right">K<span>♥</span></div></div><span class="hero-note">Original offline simulation · no real money</span></section>
-      <div class="stats-grid">${statCard('wallet', 'Play-chip balance', formatChips(profile.balance), 'free')}${statCard('cards', 'Hands played', formatChips(profile.stats.hands), 'local')}${statCard('trophy', 'Hands won', formatChips(profile.stats.wins), `${winRate}%`)}${statCard('chart', 'League points', formatChips(profile.points), `Lv ${profile.level}`)}</div>
-      ${sectionHead('Jump back in', `<button class="text-button" data-route="poker">View all games ${icon('arrow', 15)}</button>`)}<div class="game-grid">${featured.map(gameCard).join('')}</div>
+    return `<section class="hero" aria-labelledby="hero-title"><div class="hero-content"><span class="eyebrow">Good to see you, David.</span><span class="hero-kicker">SPIN & GOLD · SIGNATURE SERIES</span><h1 id="hero-title">Spin into your<br><span>golden moment.</span></h1><p>Reveal your multiplier, take your seat, and play three-handed hyper-turbo poker with cinematic presentation and unlimited offline chips.</p><div class="hero-actions"><button class="button button-gold" data-action="join-table" data-id="spin-gold">${icon('spark', 18)} Reveal your multiplier</button><button class="button button-secondary" data-action="join-table" data-id="emerald-6max">${icon('play', 18)} Take a seat</button></div><div class="hero-proof"><span>${icon('shield', 14)} Offline simulation</span><span>Original art · no cash value</span></div></div>${root.GGScenes.hero()}<div class="hero-edition">NOIR & GOLD<br><span>PLAY MONEY EDITION</span></div></section>
+      <div class="stats-grid stat-strip">${statCard('wallet', 'Play-chip balance', formatChips(profile.balance), 'free')}${statCard('cards', 'Hands played', formatChips(profile.stats.hands), 'local')}${statCard('trophy', 'Hands won', formatChips(profile.stats.wins), `${winRate}%`)}${statCard('chart', 'League points', formatChips(profile.points), `Lv ${profile.level}`)}</div>
+      ${sectionHead('Choose your game', `<button class="text-button" data-route="poker">View all games ${icon('arrow', 15)}</button>`)}<div class="game-grid">${featured.map(gameCard).join('')}</div>
       <div class="split-layout" style="margin-top:26px"><section>${sectionHead('Featured tournaments', `<button class="text-button" data-route="tournaments">Full schedule ${icon('arrow', 15)}</button>`)}<div class="tournament-grid">${Data.tournaments.filter((item) => item.featured).map(tournamentCard).join('')}</div></section><aside>${sectionHead('Daily missions')}<div class="stack">${Data.missions.slice(0, 2).map(missionCard).join('')}</div></aside></div>`;
   }
 
@@ -126,7 +128,7 @@
     const filters = [['featured', 'Featured'], ['holdem', 'Hold’em'], ['omaha', 'Omaha'], ['shortdeck', 'Short Deck'], ['spin', 'Spin & Gold'], ['rush', 'Rush & Cash'], ['aof', 'All-in or Fold'], ['flip', 'Flip & Go']];
     const query = ui.search.trim().toLowerCase();
     const tables = allTables().filter((table) => (query || (ui.pokerFilter === 'featured' ? table.category.includes('featured') : table.category.includes(ui.pokerFilter))) && (!query || `${table.name} ${table.description} ${table.variant} ${table.format}`.toLowerCase().includes(query)));
-    return `${pageHead('Poker lobby', 'Choose a local table. Simulated opponents, real poker rules, zero cash risk.', `<button class="button button-secondary" data-route="admin">${icon('plus', 17)} <span class="button-label-mobile">Create table</span></button>`)}<div class="filter-row" role="tablist" aria-label="Poker formats">${filters.map(([id, label]) => `<button class="filter-chip ${ui.pokerFilter === id ? 'active' : ''}" data-action="poker-filter" data-id="${id}" role="tab" aria-selected="${ui.pokerFilter === id}">${label}</button>`).join('')}</div><div class="lobby-toolbar"><span class="result-count">${tables.length} local ${tables.length === 1 ? 'table' : 'tables'} available</span><span class="tag tag-green">No waiting lists</span></div>${tables.length ? `<div class="game-grid">${tables.map(gameCard).join('')}</div>` : `<section class="card empty-state"><span class="empty-icon">${icon('search', 25)}</span><h2>No tables found</h2><p>Try another format or clear your search. You can also create a custom local table in Admin.</p><button class="button button-secondary" data-action="clear-search">Clear search</button></section>`}`;
+    return `${pageHead('Poker lobby', 'Choose a local table. Simulated opponents, real poker rules, zero cash risk.', `<button class="button button-secondary" data-route="admin">${icon('plus', 17)} <span class="button-label-mobile">Create table</span></button>`)}<div class="filter-row" role="group" aria-label="Poker formats">${filters.map(([id, label]) => `<button class="filter-chip ${ui.pokerFilter === id ? 'active' : ''}" data-action="poker-filter" data-id="${id}" aria-pressed="${ui.pokerFilter === id}">${label}</button>`).join('')}</div><div class="lobby-toolbar"><span class="result-count">${tables.length} local ${tables.length === 1 ? 'table' : 'tables'} available</span><span class="tag tag-green">No waiting lists</span></div>${tables.length ? `<div class="game-grid">${tables.map(gameCard).join('')}</div>` : `<section class="card empty-state"><span class="empty-icon">${icon('search', 25)}</span><h2>No tables found</h2><p>Try another format or clear your search. You can also create a custom local table in Admin.</p><button class="button button-secondary" data-action="clear-search">Clear search</button></section>`}`;
   }
 
   function tournamentCard(tournament) {
@@ -137,7 +139,7 @@
   function tournamentsView() {
     const filters = [['all', 'All events'], ['bounty', 'Bounty'], ['freezeout', 'Freezeout'], ['turbo', 'Hyper-turbo']];
     const events = Data.tournaments.filter((tournament) => ui.tournamentFilter === 'all' || tournament.type.toLowerCase().includes(ui.tournamentFilter));
-    return `${pageHead('Tournament schedule', 'Local freezeouts, bounties and fast formats. Registration uses play chips only.', `<span class="tag tag-green">${profile.registered.length} registered</span>`)}<div class="filter-row" role="tablist" aria-label="Tournament formats">${filters.map(([id, label]) => `<button class="filter-chip ${ui.tournamentFilter === id ? 'active' : ''}" data-action="tournament-filter" data-id="${id}" role="tab" aria-selected="${ui.tournamentFilter === id}">${label}</button>`).join('')}</div><div class="tournament-grid">${events.map(tournamentCard).join('')}</div><section class="card card-pad" style="margin-top:18px"><div class="admin-banner" style="margin:0">${icon('info', 20)}<p><strong>Simulated schedule.</strong> Events start immediately when you enter their table. Opponents, rankings, bounties and prize pools are generated locally.</p></div></section>`;
+    return `${pageHead('Tournament schedule', 'Local freezeouts, bounties and fast formats. Registration uses play chips only.', `<span class="tag tag-green">${profile.registered.length} registered</span>`)}<div class="filter-row" role="group" aria-label="Tournament formats">${filters.map(([id, label]) => `<button class="filter-chip ${ui.tournamentFilter === id ? 'active' : ''}" data-action="tournament-filter" data-id="${id}" aria-pressed="${ui.tournamentFilter === id}">${label}</button>`).join('')}</div><div class="tournament-grid">${events.map(tournamentCard).join('')}</div><section class="card card-pad" style="margin-top:18px"><div class="admin-banner" style="margin:0">${icon('info', 20)}<p><strong>Simulated schedule.</strong> Events start immediately when you enter their table. Opponents, rankings, bounties and prize pools are generated locally.</p></div></section>`;
   }
 
   function casinoView() {
@@ -166,10 +168,31 @@
   }
 
   function historyView() {
-    const recent = profile.history.slice(0, 7).reverse();
-    const values = recent.length ? recent.map((hand) => Math.max(5, Math.min(100, 50 + hand.net / 100))) : [8, 8, 8, 8, 8, 8, 8];
-    const labels = recent.length ? recent.map((_, index) => `H${index + 1}`) : ['—', '—', '—', '—', '—', '—', '—'];
-    return `${pageHead('PokerCraft', 'Review local results, statistics and every completed hand.', `<button class="button button-secondary" data-action="export-history">${icon('download', 17)} Export JSON</button>`)}<div class="stats-grid">${statCard('cards', 'Total hands', formatChips(profile.stats.hands))}${statCard('trophy', 'Win rate', `${profile.stats.hands ? Math.round(profile.stats.wins / profile.stats.hands * 100) : 0}%`)}${statCard('eye', 'Showdowns', formatChips(profile.stats.showdowns))}${statCard('chip', 'Best hand result', `+${formatChips(profile.stats.bestWin)}`)}</div><div class="split-layout" style="margin-top:16px"><section class="card chart-card"><div class="section-head" style="margin-top:0"><div><h2>Recent hand outcomes</h2><small>Relative result per completed hand · play chips</small></div></div><div class="bar-chart">${values.map((value, index) => `<div class="bar-column"><div class="bar" style="height:${value}%" title="${recent[index] ? `${recent[index].net} chips` : 'No hand data'}"></div><small>${labels[index]}</small></div>`).join('')}</div><div class="legend-row"><span><i class="legend-dot"></i>Outcome scaled around break-even</span><span>Latest ${recent.length} hands</span></div></section><article class="card card-pad"><span class="eyebrow">Your table profile</span><h2>Balanced explorer</h2><p>Statistics accumulate only when a hand reaches a result. Incomplete hands are not counted.</p><div class="mission-item"><div class="mission-item-top"><span>Hands won</span><strong>${profile.stats.wins}</strong></div><div class="mission-item-top"><span>Showdown rate</span><strong>${profile.stats.hands ? Math.round(profile.stats.showdowns / profile.stats.hands * 100) : 0}%</strong></div><div class="mission-item-top"><span>Tournaments entered</span><strong>${profile.registered.length}</strong></div></div></article></div>${sectionHead('Hand history', `<span class="tag">${profile.history.length} saved locally</span>`)}${profile.history.length ? `<div class="data-table-wrap"><table class="data-table"><thead><tr><th>Hand</th><th>Game</th><th>Your cards</th><th>Result</th><th>Pot</th><th></th></tr></thead><tbody>${profile.history.map((hand) => `<tr><td><strong>${hand.id}</strong><br><small>${new Date(hand.at).toLocaleString()}</small></td><td>${escapeHTML(hand.table)}<br><small>${hand.variant} · ${hand.format}</small></td><td>${hand.heroCards.join(' ')}</td><td class="${hand.net >= 0 ? 'trend-up' : 'trend-down'}">${hand.net >= 0 ? '+' : ''}${formatChips(hand.net)}</td><td>${formatChips(hand.pot)}</td><td><button class="button button-ghost button-small" data-action="replay-hand" data-id="${hand.id}">${icon('play', 14)} Replay</button></td></tr>`).join('')}</tbody></table></div>` : `<section class="card empty-state"><span class="empty-icon">${icon('history', 25)}</span><h2>No completed hands yet</h2><p>Take a seat at any poker table. Your completed hand will appear here with cards, actions and a replay.</p><button class="button button-primary" data-route="poker">Find a table</button></section>`}`;
+    const formatKeys = { classic: 'standard', rushcash: 'rush', spingold: 'spin', allinorfold: 'aof', flipgo: 'flip', mysterybounty: 'bounty' };
+    const hands = profile.history.filter((hand) => {
+      const variant = hand.variant.toLowerCase();
+      const variantMatch = ui.historyVariant === 'all' || (ui.historyVariant === 'omaha' ? variant.includes('omaha') || variant.startsWith('plo') : ui.historyVariant === 'shortdeck' ? variant === 'short deck' : variant.includes('hold’em'));
+      const formatKey = formatKeys[hand.format.toLowerCase().replaceAll(' ', '').replaceAll('&', '')] || hand.format;
+      const formatMatch = ui.historyFormat === 'all' || formatKey === ui.historyFormat;
+      return variantMatch && formatMatch;
+    }).slice(0, ui.historyPeriod === 'recent10' ? 10 : undefined);
+    const wins = hands.filter((hand) => hand.net > 0).length;
+    const showdowns = hands.filter((hand) => hand.board.length === 5).length;
+    const best = hands.reduce((maximum, hand) => Math.max(maximum, hand.net), 0);
+    const maxResult = Math.max(1, ...hands.map((hand) => Math.abs(hand.net)));
+    const chartHands = hands.slice().reverse();
+    const slot = 620 / Math.max(1, chartHands.length);
+    const bars = chartHands.map((hand, index) => {
+      const height = Math.max(2, Math.abs(hand.net) / maxResult * 90);
+      const x = 40 + index * slot + slot / 2 - Math.min(24, slot / 3) / 2;
+      if (hand.net === 0) return `<text x="${(x + Math.min(24, slot / 3) / 2).toFixed(1)}" y="125" fill="#96a2aa" font-size="10" text-anchor="middle">H${index + 1} · 0</text>`;
+      const y = hand.net >= 0 ? 120 - height : 120;
+      const color = hand.net >= 0 ? '#4bd09a' : '#ff8378';
+      return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${Math.min(24, slot / 3).toFixed(1)}" height="${height.toFixed(1)}" rx="4" fill="${color}"><title>${escapeHTML(hand.table)}: ${hand.net >= 0 ? '+' : ''}${formatChips(hand.net)} play chips</title></rect><text x="${(x + Math.min(24, slot / 3) / 2).toFixed(1)}" y="${hand.net >= 0 ? 112 - height : 140 + height}" fill="#96a2aa" font-size="10" text-anchor="middle">H${index + 1}</text>`;
+    }).join('');
+    const chart = hands.length ? `<svg class="outcome-chart" viewBox="0 0 700 260" role="img" aria-label="Positive and negative play-chip outcomes around a zero baseline"><path d="M30 120H680" stroke="#687680" stroke-width="1"/><text x="12" y="116" fill="#96a2aa" font-size="10">0</text><path d="M30 30H680M30 210H680" stroke="rgba(218,226,231,.08)"/>${bars}</svg><ul class="sr-only">${chartHands.map((hand, index) => `<li>Hand ${index + 1}, ${escapeHTML(hand.table)}, ${hand.net === 0 ? 'broke even' : hand.net > 0 ? 'won' : 'lost'} ${formatChips(Math.abs(hand.net))} play chips</li>`).join('')}</ul>` : `<div class="empty-state chart-empty"><span class="empty-icon">${icon('chart', 24)}</span><h2>No matching outcomes</h2><p>Change the filters or complete another hand. No chart is shown when there is no data.</p></div>`;
+    const filters = `<div class="history-filters"><div class="field"><label for="history-variant">Variant</label><select class="select" id="history-variant" data-action="history-filter" data-key="historyVariant"><option value="all">All variants</option><option value="holdem" ${ui.historyVariant === 'holdem' ? 'selected' : ''}>Hold’em</option><option value="omaha" ${ui.historyVariant === 'omaha' ? 'selected' : ''}>Omaha / PLO</option><option value="shortdeck" ${ui.historyVariant === 'shortdeck' ? 'selected' : ''}>Short Deck</option></select></div><div class="field"><label for="history-format">Format</label><select class="select" id="history-format" data-action="history-filter" data-key="historyFormat"><option value="all">All formats</option>${[['standard', 'Classic'], ['rush', 'Rush & Cash'], ['spin', 'Spin & Gold'], ['aof', 'All-in or Fold'], ['flip', 'Flip & Go'], ['bounty', 'Mystery Bounty']].map(([value, label]) => `<option value="${value}" ${ui.historyFormat === value ? 'selected' : ''}>${label}</option>`).join('')}</select></div><div class="field"><label for="history-period">Period</label><select class="select" id="history-period" data-action="history-filter" data-key="historyPeriod"><option value="recent10" ${ui.historyPeriod === 'recent10' ? 'selected' : ''}>Latest 10 hands</option><option value="all" ${ui.historyPeriod === 'all' ? 'selected' : ''}>All saved hands</option></select></div></div>`;
+    return `${pageHead('PokerCraft', 'Review local results, statistics and every completed hand.', `<button class="button button-secondary" data-action="export-history">${icon('download', 17)} Export JSON</button>`)}${filters}<div class="stats-grid">${statCard('cards', 'Filtered hands', formatChips(hands.length))}${statCard('trophy', 'Win rate', `${hands.length ? Math.round(wins / hands.length * 100) : 0}%`)}${statCard('eye', 'Showdowns', formatChips(showdowns))}${statCard('chip', 'Best hand result', `+${formatChips(best)}`)}</div><div class="split-layout" style="margin-top:16px"><section class="card chart-card"><div class="section-head" style="margin-top:0"><div><h2>Hand outcomes</h2><small>Net play chips · zero baseline · up to ±${formatChips(maxResult)} chips</small></div></div>${chart}<div class="legend-row"><span><i class="legend-dot"></i>Positive above zero</span><span><i class="legend-dot" style="background:var(--danger)"></i>Negative below zero</span></div></section><article class="card card-pad"><span class="eyebrow">Your table profile</span><h2>Balanced explorer</h2><p>Filters update these statistics, chart and history table together. Incomplete hands are excluded.</p><div class="mission-item"><div class="mission-item-top"><span>Hands won</span><strong>${wins}</strong></div><div class="mission-item-top"><span>Showdown rate</span><strong>${hands.length ? Math.round(showdowns / hands.length * 100) : 0}%</strong></div><div class="mission-item-top"><span>Net result</span><strong>${formatChips(hands.reduce((total, hand) => total + hand.net, 0))}</strong></div></div></article></div>${sectionHead('Hand history', `<span class="tag">${hands.length} shown · ${profile.history.length} saved</span>`)}${hands.length ? `<div class="data-table-wrap"><table class="data-table"><thead><tr><th>Hand</th><th>Game</th><th>Your cards</th><th>Result</th><th>Pot</th><th></th></tr></thead><tbody>${hands.map((hand) => `<tr><td><strong>${hand.id}</strong><br><small>${new Date(hand.at).toLocaleString()}</small></td><td>${escapeHTML(hand.table)}<br><small>${hand.variant} · ${hand.format}</small></td><td>${hand.heroCards.join(' ')}</td><td class="${hand.net >= 0 ? 'trend-up' : 'trend-down'}">${hand.net >= 0 ? '+' : ''}${formatChips(hand.net)}</td><td>${formatChips(hand.pot)}</td><td><button class="button button-ghost button-small" data-action="replay-hand" data-id="${hand.id}" aria-label="Replay ${hand.id}">${icon('play', 14)} Replay</button></td></tr>`).join('')}</tbody></table></div>` : `<section class="card empty-state"><span class="empty-icon">${icon('history', 25)}</span><h2>No matching hands</h2><p>Try broader filters or take a seat at another table. Completed hands will appear here.</p><button class="button button-primary" data-route="poker">Find a table</button></section>`}`;
   }
 
   function settingRow(iconName, title, description, control) {
@@ -189,38 +212,72 @@
   }
 
   function renderChrome() {
-    document.getElementById('brand-logo').innerHTML = logo();
-    document.getElementById('search-icon').innerHTML = icon('search', 17);
-    document.getElementById('mobile-menu-button').innerHTML = icon('menu', 21);
-    document.getElementById('notification-button').insertAdjacentHTML('afterbegin', icon('bell', 19));
-    const notificationButton = document.getElementById('notification-button');
-    notificationButton.querySelectorAll('svg:not(:first-child)').forEach((element) => element.remove());
+    const navRoot = document.getElementById('main-nav');
+    if (!navRoot.dataset.ready) {
+      document.getElementById('brand-logo').innerHTML = logo();
+      document.getElementById('search-icon').innerHTML = icon('search', 17);
+      document.getElementById('mobile-menu-button').innerHTML = icon('menu', 21);
+      document.getElementById('notification-button').insertAdjacentHTML('afterbegin', icon('bell', 19));
+      document.getElementById('wallet-button').innerHTML = `${icon('chip', 17)}<span id="wallet-value">${formatChips(profile.balance)}</span>`;
+      document.getElementById('sidebar-profile').innerHTML = '<span class="avatar avatar-hero">D</span><span class="profile-copy sr-only">David, Administrator</span>';
+      navRoot.innerHTML = navItems.map(([route, label, iconName], index) => `${index === 4 || index === 7 ? '<span class="nav-divider" aria-hidden="true"></span>' : ''}<button class="nav-button" data-route="${route}" aria-label="${label}" data-tooltip="${label}">${icon(iconName, 20)}<span>${label}</span>${route === 'promotions' ? '<span class="nav-badge">1</span>' : ''}</button>`).join('');
+      document.getElementById('bottom-nav').innerHTML = bottomItems.map((route) => {
+        const item = navItems.find((entry) => entry[0] === route) || ['profile', 'Profile', 'user'];
+        return `<button class="nav-button" data-route="${route}" aria-label="${item[1]}">${icon(item[2], 20)}<span>${item[1]}</span></button>`;
+      }).join('');
+      navRoot.dataset.ready = 'true';
+    }
+    document.querySelectorAll('[data-route]').forEach((button) => {
+      const active = button.dataset.route === ui.route;
+      button.classList.toggle('active', active);
+      if (active) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
+    });
+    document.getElementById('wallet-value').textContent = formatChips(profile.balance);
     document.getElementById('sound-button').innerHTML = icon(profile.settings.sound ? 'sound' : 'muted', 19);
     document.getElementById('sound-button').setAttribute('aria-pressed', String(profile.settings.sound));
-    document.getElementById('wallet-button').innerHTML = `${icon('chip', 17)}<span>${formatChips(profile.balance)}</span>`;
-    document.getElementById('sidebar-profile').innerHTML = `<span class="avatar avatar-hero">D</span><span class="profile-copy"><strong>David</strong><small>Administrator</small></span>${icon('chevron', 15)}`;
-    document.getElementById('daily-mission-label').textContent = 'Daily mission';
     const dailyHands = Math.min(10, profile.stats.hands);
     document.querySelector('.sidebar-mission .progress-track span').style.width = `${dailyHands * 10}%`;
     document.querySelector('.sidebar-mission small').textContent = `${dailyHands} of 10 hands`;
-    const navHTML = navItems.map(([route, label, iconName]) => `<button class="nav-button ${ui.route === route ? 'active' : ''}" data-route="${route}" ${ui.route === route ? 'aria-current="page"' : ''}>${icon(iconName, 19)}<span>${label}</span>${route === 'promotions' ? '<span class="nav-badge">1</span>' : ''}</button>`).join('');
-    document.getElementById('main-nav').innerHTML = navHTML;
-    document.getElementById('bottom-nav').innerHTML = bottomItems.map((route) => {
-      const item = navItems.find((entry) => entry[0] === route) || ['profile', 'Profile', 'user'];
-      return `<button class="nav-button ${ui.route === route ? 'active' : ''}" data-route="${route}" ${ui.route === route ? 'aria-current="page"' : ''}>${icon(item[2], 19)}<span>${item[1]}</span></button>`;
-    }).join('');
-    document.body.dataset.motion = profile.settings.motion ? 'on' : 'off';
+    document.body.dataset.motion = profile.settings.motion && !matchMedia('(prefers-reduced-motion: reduce)').matches ? 'on' : 'off';
+    document.body.dataset.route = ui.route;
     root.GGAudio.configure(profile.settings);
   }
 
   function render() {
     renderChrome();
     if (ui.route === 'table' && ui.tableSession) {
-      view.innerHTML = Table.render(ui.tableSession);
+      if (!Table.patch(ui.tableSession)) view.innerHTML = Table.render(ui.tableSession);
+      const heading = view.querySelector('h1');
+      if (heading) {
+        heading.id = 'route-title';
+        view.setAttribute('aria-labelledby', heading.id);
+        view.removeAttribute('aria-label');
+      }
+      syncSpinDialog();
       return;
     }
     const views = { home: homeView, poker: pokerView, tournaments: tournamentsView, casino: casinoView, promotions: promotionsView, leaderboard: leaderboardView, history: historyView, profile: profileView, admin: adminView };
     view.innerHTML = views[ui.route] ? views[ui.route]() : homeView();
+    const heading = view.querySelector('h1');
+    if (heading) {
+      heading.id = heading.id || 'route-title';
+      view.setAttribute('aria-labelledby', heading.id);
+      view.removeAttribute('aria-label');
+    }
+  }
+
+  function setNavOpen(open) {
+    const sidebar = document.querySelector('.sidebar');
+    const button = document.getElementById('mobile-menu-button');
+    sidebar.classList.toggle('open', open);
+    document.getElementById('nav-backdrop').classList.toggle('open', open);
+    button.setAttribute('aria-expanded', String(open));
+    document.querySelector('.workspace').inert = open;
+    document.getElementById('bottom-nav').inert = open;
+    sidebar.inert = innerWidth <= 700 && !open;
+    if (open) sidebar.querySelector('button').focus();
+    else if (document.activeElement && sidebar.contains(document.activeElement)) button.focus();
   }
 
   function navigate(route, options = {}) {
@@ -228,8 +285,7 @@
     if (ui.tableSession && route !== 'table' && !options.keepTable) leaveTable(false);
     ui.route = route;
     history.replaceState(null, '', `#/${route}`);
-    document.querySelector('.sidebar').classList.remove('open');
-    document.getElementById('mobile-menu-button').setAttribute('aria-expanded', 'false');
+    setNavOpen(false);
     render();
     view.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: profile.settings.motion ? 'smooth' : 'auto' });
@@ -246,13 +302,81 @@
 
   function openModal(title, body, footer = '', large = false) {
     ui.lastFocus = document.activeElement;
-    modalRoot.innerHTML = `<div class="modal-backdrop" data-action="backdrop-close"><section class="modal ${large ? 'modal-large' : ''}" role="dialog" aria-modal="true" aria-labelledby="modal-title"><header class="modal-head"><h2 id="modal-title">${title}</h2><button class="icon-button" data-action="close-modal" aria-label="Close dialog">${icon('close', 20)}</button></header><div class="modal-body">${body}</div>${footer ? `<footer class="modal-footer">${footer}</footer>` : ''}</section></div>`;
-    modalRoot.querySelector('[data-action="close-modal"]').focus();
+    dialog.classList.toggle('modal-large', large);
+    dialog.dataset.action = 'backdrop-close';
+    dialog.innerHTML = `<header class="modal-head"><h2 id="dialog-title">${title}</h2><button class="icon-button" data-action="close-modal" aria-label="Close dialog">${icon('close', 20)}</button></header><div class="modal-body">${body}</div>${footer ? `<footer class="modal-footer">${footer}</footer>` : ''}`;
+    if (!dialog.open) dialog.showModal();
+    dialog.querySelector('[data-action="close-modal"]').focus();
   }
 
   function closeModal() {
-    modalRoot.innerHTML = '';
+    if (dialog.open) dialog.close();
     if (ui.lastFocus && document.contains(ui.lastFocus)) ui.lastFocus.focus();
+  }
+
+  function syncSpinDialog() {
+    const session = ui.tableSession;
+    if (!session || !session.showSpin) {
+      if (spinDialog.open) spinDialog.close();
+      return;
+    }
+    if (spinDialog.dataset.handId !== session.state.handId) {
+      spinDialog.dataset.handId = session.state.handId;
+      spinDialog.dataset.action = 'spin-close';
+      spinDialog.innerHTML = `<div class="spin-panel"><span class="eyebrow">Spin & Gold</span><h2 id="spin-dialog-title">Your prize is sealed</h2>${root.GGScenes.wheel(session.multiplier)}<div class="spin-result-copy" aria-live="polite"></div><p>Three players. One randomly selected play-chip prize. No cash value.</p><div class="complete-actions"><button class="button button-ghost" data-action="spin-leave">${icon('close', 16)} Leave table</button><span data-spin-action></span></div></div>`;
+    }
+    spinDialog.dataset.stage = session.spinStage;
+    const result = spinDialog.querySelector('.spin-result-copy');
+    result.textContent = session.spinStage === 'revealed' ? `×${session.multiplier} · ${formatChips(session.config.buyIn * session.multiplier)} play chips` : session.spinStage === 'revealing' ? 'Revealing your multiplier…' : 'The wheel already holds your result. Reveal when ready.';
+    spinDialog.querySelector('[data-spin-action]').innerHTML = session.spinStage === 'awaiting'
+      ? `<button class="button button-gold" data-action="reveal-spin">${icon('spark', 18)} Reveal prize</button>`
+      : session.spinStage === 'revealing'
+        ? '<button class="button button-gold" disabled>Revealing…</button>'
+        : `<button class="button button-gold" data-action="dismiss-spin">${icon('play', 18)} Start game</button>`;
+    if (!spinDialog.open) spinDialog.showModal();
+  }
+
+  function finishSpinReveal() {
+    clearTimeout(ui.spinTimer);
+    const session = ui.tableSession;
+    if (!session || session.spinStage !== 'revealing') return;
+    session.spinStage = 'revealed';
+    syncSpinDialog();
+    const start = spinDialog.querySelector('[data-action="dismiss-spin"]');
+    if (start) start.focus();
+    root.GGAudio.play('reward');
+  }
+
+  function revealSpin() {
+    const session = ui.tableSession;
+    if (!session || session.spinStage !== 'awaiting') return;
+    session.spinStage = 'revealing';
+    syncSpinDialog();
+    spinDialog.querySelector('[data-action="spin-leave"]').focus();
+    const index = [2, 3, 5, 10, 25, 200].indexOf(session.multiplier);
+    const rotation = 5 * 360 + (360 - (index * 60 + 30));
+    const rotor = spinDialog.querySelector('#spin-wheel-rotor');
+    if (document.body.dataset.motion === 'off') {
+      rotor.style.transform = `rotate(${rotation}deg)`;
+      finishSpinReveal();
+      return;
+    }
+    rotor.classList.add('revealing');
+    requestAnimationFrame(() => { rotor.style.transform = `rotate(${rotation}deg)`; });
+    ui.spinTimer = setTimeout(finishSpinReveal, 1650);
+  }
+
+  function dismissSpin() {
+    const session = ui.tableSession;
+    if (!session) return;
+    clearTimeout(ui.spinTimer);
+    session.showSpin = false;
+    session.spinStage = null;
+    if (spinDialog.open) spinDialog.close();
+    render();
+    scheduleTable();
+    const focusTarget = view.querySelector('[data-action-region] button:not(:disabled)') || view.querySelector('h1');
+    if (focusTarget) focusTarget.focus({ preventScroll: true });
   }
 
   function startTable(id) {
@@ -333,7 +457,7 @@
         root.GGAudio.play('chip');
         render();
         scheduleTable();
-      }, profile.settings.motion ? 420 : 40);
+      }, 400);
       return;
     }
     const index = session.state.actingIndex;
@@ -347,7 +471,7 @@
         if (before === 0) root.GGAudio.play('deal');
         render();
         scheduleTable();
-      }, profile.settings.motion ? 520 + Math.random() * 380 : 60);
+      }, 480 + Math.random() * 280);
     }
   }
 
@@ -355,6 +479,8 @@
     const session = ui.tableSession;
     if (!session) return;
     clearTimeout(ui.tableTimer);
+    clearTimeout(ui.spinTimer);
+    if (spinDialog.open) spinDialog.close();
     recordHand();
     const hero = session.state.players[0];
     const cashout = hero.chips + (session.state.street === 'complete' ? 0 : hero.totalBet);
@@ -379,6 +505,7 @@
       render();
       scheduleTable();
     } catch (error) {
+      console.error(error);
       showToast('Action unavailable', error.message, true);
     }
   }
@@ -423,7 +550,7 @@
         ui.casinoSession = Casino.resolve(ui.casinoSession, context);
         if (ui.casinoSession.payout) root.GGAudio.play('win');
         render();
-      }, profile.settings.motion ? 850 : 60);
+      }, 850);
     } else if (ui.casinoSession.payout && ui.casinoSession.payout > 0) {
       root.GGAudio.play('win');
     }
@@ -446,7 +573,7 @@
   }
 
   document.addEventListener('click', (event) => {
-    const routeTarget = event.target.closest('[data-route]');
+    const routeTarget = event.target.closest('button[data-route], a[data-route]');
     if (routeTarget) {
       root.GGAudio.unlock();
       root.GGAudio.play('click');
@@ -460,9 +587,8 @@
     root.GGAudio.unlock();
     if (action !== 'backdrop-close' || event.target === target) root.GGAudio.play('click');
     if (action === 'toggle-nav') {
-      const sidebar = document.querySelector('.sidebar');
-      sidebar.classList.toggle('open');
-      target.setAttribute('aria-expanded', String(sidebar.classList.contains('open')));
+      const open = !document.querySelector('.sidebar').classList.contains('open');
+      setNavOpen(open);
     } else if (action === 'notifications') {
       openModal('Notifications', `<div class="notification-item">${icon('gift', 20)}<div><strong>Your daily reward is ready</strong><p>Claim 2,500 free play chips in Promotions.</p></div></div><div class="notification-item">${icon('trophy', 20)}<div><strong>River Championship starts soon</strong><p>Register with play chips in the local tournament lobby.</p></div></div><div class="notification-item">${icon('shield', 20)}<div><strong>Offline mode is active</strong><p>No remote account or payment service is connected.</p></div></div>`, `<button class="button button-primary" data-action="close-modal">Mark as read</button>`);
     } else if (action === 'close-modal' || action === 'backdrop-close' && event.target === target) closeModal();
@@ -513,7 +639,14 @@
       ui.tableSession = Table.rebuy(ui.tableSession);
       render(); scheduleTable();
     } else if (action === 'rabbit-hunt') rabbitHunt();
-    else if (action === 'dismiss-spin' && ui.tableSession) { ui.tableSession.showSpin = false; root.GGAudio.play('reward'); render(); scheduleTable(); }
+    else if (action === 'reveal-spin') revealSpin();
+    else if (action === 'dismiss-spin') dismissSpin();
+    else if (action === 'spin-leave') leaveTable();
+    else if (action === 'spin-close' && event.target === spinDialog) {
+      if (ui.tableSession && ui.tableSession.spinStage === 'revealing') finishSpinReveal();
+      else if (ui.tableSession && ui.tableSession.spinStage === 'revealed') dismissSpin();
+      else leaveTable();
+    }
     else if (action === 'toggle-squeeze' && ui.tableSession) { ui.tableSession.squeezed = !ui.tableSession.squeezed; root.GGAudio.play('flip'); render(); }
     else if (action === 'table-settings') tableSettings();
     else if (action === 'bet-fraction') {
@@ -549,6 +682,9 @@
       render();
     } else if (event.target.dataset.action === 'leaderboard-period') {
       ui.leaderboardPeriod = event.target.value;
+      render();
+    } else if (event.target.dataset.action === 'history-filter') {
+      ui[event.target.dataset.key] = event.target.value;
       render();
     }
   });
@@ -600,14 +736,57 @@
     }
   });
 
+  dialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closeModal();
+  });
+
+  spinDialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    const session = ui.tableSession;
+    if (!session) return;
+    if (session.spinStage === 'revealing') finishSpinReveal();
+    else if (session.spinStage === 'revealed') dismissSpin();
+    else leaveTable();
+  });
+
   document.addEventListener('keydown', (event) => {
+    const sidebar = document.querySelector('.sidebar');
+    if (event.key === 'Tab' && sidebar.classList.contains('open')) {
+      const focusable = [...sidebar.querySelectorAll('button:not([disabled]), a[href], input, select, [tabindex]:not([tabindex="-1"])')].filter((element) => !element.inert && element.getClientRects().length);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      } else if (!focusable.includes(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault();
       document.getElementById('global-search').focus();
     }
     if (event.key === 'Escape') {
-      if (modalRoot.innerHTML) closeModal();
+      if (dialog.open) closeModal();
+      setNavOpen(false);
+    }
+  });
+
+  document.querySelector('.sidebar').inert = innerWidth <= 700;
+  window.addEventListener('resize', () => {
+    if (innerWidth > 700) {
+      document.querySelector('.sidebar').inert = false;
+      document.querySelector('.workspace').inert = false;
+      document.getElementById('bottom-nav').inert = false;
       document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('nav-backdrop').classList.remove('open');
+    } else if (!document.querySelector('.sidebar').classList.contains('open')) {
+      document.querySelector('.sidebar').inert = true;
     }
   });
 

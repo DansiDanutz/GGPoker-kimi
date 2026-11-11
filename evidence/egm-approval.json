@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "timestamp": "2026-11-11T05:10:00.000Z",
+  "reviews": [
+    {
+      "reviewer": "EGM design",
+      "verdict": "The Noir & Gold redesign meets the requested professional upgrade and is release-ready. No release-blocking design problem remains.",
+      "coverage": ["art direction", "format scenes", "PokerCraft truthfulness", "keyboard accessibility", "motion restraint"]
+    },
+    {
+      "reviewer": "EGM structural",
+      "verdict": "No release blocker remains. All previously identified structural blockers are resolved.",
+      "coverage": ["stable rendering", "focus containment", "44px targets", "accessible landmarks", "geometry matrix", "deterministic screenshots", "all seat and card configurations"]
+    }
+  ]
+}

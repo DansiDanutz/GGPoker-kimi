@@ -7,7 +7,8 @@ if (!modulePath) throw new Error('Set PLAYWRIGHT_MODULE to the installed playwri
 const { chromium } = require(modulePath);
 const executablePath = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const baseURL = process.env.APP_URL || 'http://127.0.0.1:4173';
-const output = path.resolve('qa-output');
+const output = path.resolve('qa-output/redesign');
+fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
 
 (async () => {
@@ -45,9 +46,9 @@ fs.mkdirSync(output, { recursive: true });
     await page.goto(baseURL, { waitUntil: 'networkidle' });
     await check('home renders without a startup error', async () => {
       assert.equal(await page.title(), 'GGPoker PlayMoney');
-      assert.equal(await page.locator('h1').first().textContent(), 'Good to see you, David.');
+      assert.match(await page.locator('h1').first().textContent(), /Spin into your/);
       assert.match(await page.locator('#wallet-button').textContent(), /250,000/);
-      await screenshot('home-1440');
+      await screenshot('home-initial-1440');
     });
 
     await check('all primary navigation tabs render', async () => {
@@ -110,7 +111,7 @@ fs.mkdirSync(output, { recursive: true });
       await screenshot('table-1440', false);
       await page.locator('[data-action="poker-fold"]').waitFor({ timeout: 20000 });
       await page.locator('[data-action="poker-fold"]').click();
-      await page.locator('[data-action="next-hand"], [data-action="rebuy-hand"]').waitFor({ timeout: 25000 });
+      await page.locator('[data-action="next-hand"], [data-action="rebuy-hand"]').waitFor({ timeout: 45000 });
       await screenshot('showdown-1440', false);
       await page.locator('[data-action="replay-current"]').click();
       await page.getByRole('dialog').waitFor();

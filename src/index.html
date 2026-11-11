@@ -49,13 +49,16 @@
   </div>
 
   <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
-  <div id="modal-root"></div>
+  <div class="nav-backdrop" id="nav-backdrop" data-action="toggle-nav" aria-hidden="true"></div>
+  <dialog id="app-dialog" class="modal" aria-labelledby="dialog-title"></dialog>
+  <dialog id="spin-dialog" class="modal spin-dialog" aria-labelledby="spin-dialog-title"></dialog>
   <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
 
   <script src="engine.js"></script>
   <script src="data.js"></script>
   <script src="icons.js"></script>
   <script src="audio.js"></script>
+  <script src="scenes.js"></script>
   <script src="poker-table.js"></script>
   <script src="casino.js"></script>
   <script src="app.js"></script>

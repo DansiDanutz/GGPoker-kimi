@@ -57,7 +57,7 @@
     click() { tone(480, 0.055, { gain: 0.08, type: 'triangle' }); },
     deal() { noise(0.07); tone(240, 0.06, { gain: 0.04, type: 'triangle' }); },
     flip() { noise(0.11); tone(360, 0.09, { gain: 0.06, type: 'triangle', endFrequency: 520 }); },
-    chip() { tone(1250, 0.07, { gain: 0.08, type: 'sine' }); tone(1750, 0.09, { delay: 0.045, gain: 0.06 }); },
+    chip() { noise(0.045); [1120, 1470, 1830].forEach((frequency, index) => tone(frequency, 0.065, { delay: index * 0.035, gain: 0.055, type: 'sine' })); },
     check() { tone(320, 0.06, { gain: 0.07, type: 'triangle' }); tone(290, 0.07, { delay: 0.07, gain: 0.06 }); },
     fold() { tone(280, 0.13, { gain: 0.07, type: 'sine', endFrequency: 150 }); },
     win() { [523, 659, 784, 1047].forEach((frequency, index) => tone(frequency, 0.22, { delay: index * 0.09, gain: 0.1, type: 'triangle' })); },

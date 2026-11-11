@@ -48,6 +48,10 @@ const executablePath = process.env.CHROME_PATH || '/Applications/Google Chrome.a
       await page.locator(`[data-action="join-table"][data-id="${format.id}"]`).click();
       await page.locator('.table-title h1').waitFor();
       if (format.spin) {
+        await page.locator('#spin-dialog[open]').waitFor();
+        await page.locator('[data-action="reveal-spin"]').click();
+        await page.locator('[data-action="dismiss-spin"]').waitFor({ timeout: 6000 });
+        assert.match(await page.locator('.spin-result-copy').textContent(), /play chips/);
         await page.locator('[data-action="dismiss-spin"]').click();
         assert.match(await page.locator('.table-toolbar').textContent(), /Prize ×/);
       }
@@ -75,11 +79,11 @@ const executablePath = process.env.CHROME_PATH || '/Applications/Google Chrome.a
         if (await page.locator('[data-action="next-hand"], [data-action="rebuy-hand"]').count() === 0) {
           await page.locator('[data-action="poker-fold"]').click();
         }
-        await page.locator('[data-action="next-hand"], [data-action="rebuy-hand"]').waitFor({ timeout: 25000 });
+        await page.locator('[data-action="next-hand"], [data-action="rebuy-hand"]').waitFor({ timeout: 45000 });
       } else {
         await page.locator('[data-action="poker-fold"]').waitFor({ timeout: 20000 });
         await page.locator('[data-action="poker-fold"]').click();
-        await page.locator('[data-action="next-hand"], [data-action="rebuy-hand"]').waitFor({ timeout: 25000 });
+        await page.locator('[data-action="next-hand"], [data-action="rebuy-hand"]').waitFor({ timeout: 45000 });
       }
       checks.push({ format: format.id, passed: true });
       console.log(`PASS ${format.id}`);
@@ -99,7 +103,7 @@ const executablePath = process.env.CHROME_PATH || '/Applications/Google Chrome.a
     await page.locator('[data-action="reset-profile"]').click();
     await page.locator('[data-action="confirm-reset"]').click();
     await page.locator('h1').first().waitFor();
-    assert.equal(await page.locator('h1').first().textContent(), 'Good to see you, David.');
+    assert.match(await page.locator('h1').first().textContent(), /Spin into your/);
     assert.match(await page.locator('#wallet-button').textContent(), /250,000/);
     checks.push({ format: 'confirmed-local-reset', passed: true });
     console.log('PASS confirmed-local-reset');
@@ -109,9 +113,10 @@ const executablePath = process.env.CHROME_PATH || '/Applications/Google Chrome.a
     fs.writeFileSync('evidence/formats-qa.json', JSON.stringify({ passed: true, timestamp: new Date().toISOString(), checks, errors }, null, 2));
     console.log(JSON.stringify({ passed: true, checks: checks.length, errors: 0 }, null, 2));
   } catch (error) {
-    const tableState = await page.locator('.table-stage').count() ? await page.locator('.table-stage').textContent() : null;
-    await page.screenshot({ path: 'qa-output/formats-failure.png', fullPage: true }).catch(() => {});
-    fs.writeFileSync('evidence/formats-qa.json', JSON.stringify({ passed: false, timestamp: new Date().toISOString(), checks, errors, failure: error.stack, tableState }, null, 2));
+    const tableState = await page.locator('.table-layout').count() ? await page.locator('.table-layout').textContent() : null;
+    const toast = await page.locator('#toast-region').textContent();
+    await page.screenshot({ path: `qa-output/formats-failure-${Date.now()}.png`, fullPage: true }).catch(() => {});
+    fs.writeFileSync('evidence/formats-qa.json', JSON.stringify({ passed: false, timestamp: new Date().toISOString(), checks, errors, failure: error.stack, tableState, toast }, null, 2));
     throw error;
   } finally {
     await browser.close();

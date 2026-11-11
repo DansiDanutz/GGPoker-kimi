@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "timestamp": "2026-11-11T05:10:00.000Z",
+  "application": {
+    "path": "/Applications/GGPoker-PlayMoney.app",
+    "bundleId": "com.danslab.ggpokerplaymoney",
+    "sizeBytesApproximate": 544000,
+    "codeSignature": "valid on disk; satisfies its Designated Requirement"
+  },
+  "checks": [
+    { "name": "Noir & Gold native home launches", "passed": true, "evidence": "agent-desktop found the Spin into your golden moment main region" },
+    { "name": "Spin & Gold reveal is accessibility operable", "passed": true, "evidence": "Reveal prize and Start game buttons found and activated" },
+    { "name": "upgraded native table opens", "passed": true, "evidence": "three-seat table exposes Fold, Call and Raise controls" },
+    { "name": "rendered native evidence", "passed": true, "evidence": "qa-output/redesign-details/native-home-final.png, native-spin-final.png and native-table-final.png inspected" }
+  ]
+}
