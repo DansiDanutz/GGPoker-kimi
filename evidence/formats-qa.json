@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "timestamp": "2026-11-11T05:49:30.383Z",
+  "checks": [
+    {
+      "format": "emerald-6max",
+      "passed": true
+    },
+    {
+      "format": "omaha-lake",
+      "passed": true
+    },
+    {
+      "format": "plo5-canyon",
+      "passed": true
+    },
+    {
+      "format": "plo6-summit",
+      "passed": true
+    },
+    {
+      "format": "spin-gold",
+      "passed": true
+    },
+    {
+      "format": "rush-river",
+      "passed": true
+    },
+    {
+      "format": "aof-lightning",
+      "passed": true
+    },
+    {
+      "format": "flip-go",
+      "passed": true
+    },
+    {
+      "format": "mystery-bounty",
+      "passed": true
+    },
+    {
+      "format": "history-export",
+      "passed": true
+    },
+    {
+      "format": "confirmed-local-reset",
+      "passed": true
+    },
+    {
+      "format": "zero-console-errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071c17">
+  <meta name="description" content="Offline play-chip poker and casino. No deposits, withdrawals, or cash value.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230b2b20'/%3E%3Cpath d='M24 7C18 15 9 20 9 28a9 9 0 0 0 13 8c-.6 3-2 5-4 6h12c-2-1-3.4-3-4-6a9 9 0 0 0 13-8c0-8-9-13-15-21Z' fill='%23e9bd68'/%3E%3C/svg%3E">
+  <title>GGPoker PlayMoney</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-view">Skip to main content</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <button class="brand" data-route="home" aria-label="GGPoker PlayMoney home" id="brand-logo"></button>
+      <div class="offline-badge"><span class="status-dot"></span> Offline · play chips only</div>
+      <nav class="main-nav" id="main-nav"></nav>
+      <section class="sidebar-mission" aria-label="Daily mission">
+        <span class="eyebrow" id="daily-mission-label"></span>
+        <strong>River explorer</strong>
+        <p>Complete 10 hands for a 1,000-chip reward.</p>
+        <div class="progress-track"><span style="width:60%"></span></div>
+        <small>6 of 10 hands</small>
+      </section>
+      <button class="sidebar-profile" data-route="profile" id="sidebar-profile"></button>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" data-action="toggle-nav" aria-label="Open navigation" aria-expanded="false" id="mobile-menu-button"></button>
+        <form class="search-box" id="search-form" role="search">
+          <span id="search-icon"></span>
+          <label class="sr-only" for="global-search">Search games and tournaments</label>
+          <input id="global-search" type="search" placeholder="Search games, formats, tournaments…" autocomplete="off">
+          <kbd>⌘ K</kbd>
+        </form>
+        <div class="topbar-actions">
+          <span class="local-mode">Local mode</span>
+          <button class="icon-button" data-action="toggle-sound" aria-label="Toggle sound" id="sound-button"></button>
+          <button class="icon-button notification-button" data-action="notifications" aria-label="Open notifications" id="notification-button"><span class="notification-dot"></span></button>
+          <button class="wallet-pill" data-route="profile" aria-label="View play-chip balance" id="wallet-button"></button>
+          <button class="avatar avatar-hero top-avatar" data-route="profile" aria-label="Open David's profile">D</button>
+        </div>
+      </header>
+
+      <main id="main-view" tabindex="-1" aria-label="Game lobby"></main>
+    </div>
+  </div>
+
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Mobile navigation"></nav>
+  <div class="nav-backdrop" id="nav-backdrop" data-action="toggle-nav" aria-hidden="true"></div>
+  <dialog id="app-dialog" class="modal" aria-labelledby="dialog-title"></dialog>
+  <dialog id="spin-dialog" class="modal spin-dialog" aria-labelledby="spin-dialog-title"></dialog>
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="engine.js"></script>
+  <script src="data.js"></script>
+  <script src="icons.js"></script>
+  <script src="audio.js"></script>
+  <script src="scenes.js"></script>
+  <script src="poker-table.js"></script>
+  <script src="casino.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

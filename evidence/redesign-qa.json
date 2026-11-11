@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "timestamp": "2026-11-11T05:50:04.161Z",
+  "checks": [
+    {
+      "name": "Noir & Gold home has one H1, compact rail and original format scenes",
+      "passed": true
+    },
+    {
+      "name": "Spin & Gold has three seats and a deterministic reveal",
+      "passed": true
+    },
+    {
+      "name": "seat, pot, navigation, announcer and action-region identities survive updates",
+      "passed": true
+    },
+    {
+      "name": "focus remains usable after the hero folds",
+      "passed": true
+    },
+    {
+      "name": "PokerCraft handles PLO variants, all periods and neutral break-even results",
+      "passed": true
+    },
+    {
+      "name": "responsive home scenes fit every required width",
+      "passed": true
+    },
+    {
+      "name": "mobile and desktop table elements stay inside the scene",
+      "passed": true
+    },
+    {
+      "name": "two and four-seat scenes cover all hole-card configurations",
+      "passed": true
+    },
+    {
+      "name": "reduced motion immediately exposes the final wheel state",
+      "passed": true
+    },
+    {
+      "name": "mobile drawer traps focus and restores the trigger on Escape",
+      "passed": true
+    },
+    {
+      "name": "interactive controls meet 44px targets and mobile labels remain visible",
+      "passed": true
+    },
+    {
+      "name": "no browser errors during the redesign scenarios",
+      "passed": true
+    }
+  ],
+  "errors": []
+}
