@@ -1,0 +1,91 @@
+{
+  "passed": true,
+  "timestamp": "2026-11-11T02:48:12.252Z",
+  "checks": [
+    {
+      "name": "home renders without a startup error",
+      "passed": true
+    },
+    {
+      "name": "all primary navigation tabs render",
+      "passed": true
+    },
+    {
+      "name": "tournament and leaderboard controls change the view",
+      "passed": true
+    },
+    {
+      "name": "search spans all poker variants and chip signs are preserved",
+      "passed": true
+    },
+    {
+      "name": "profile sound, motion, HUD and theme controls persist",
+      "passed": true
+    },
+    {
+      "name": "Short Deck poker hand, showdown, replay and rabbit hunt",
+      "passed": true
+    },
+    {
+      "name": "blackjack deals and settles",
+      "passed": true
+    },
+    {
+      "name": "slots spin and settle",
+      "passed": true
+    },
+    {
+      "name": "roulette spins and settles",
+      "passed": true
+    },
+    {
+      "name": "baccarat deals with third-card rules",
+      "passed": true
+    },
+    {
+      "name": "daily reward and tournament registration",
+      "passed": true
+    },
+    {
+      "name": "admin chips, bot difficulty and custom table creation",
+      "passed": true
+    },
+    {
+      "name": "completed hand appears in PokerCraft",
+      "passed": true
+    },
+    {
+      "name": "responsive lobby at required widths",
+      "passed": true
+    },
+    {
+      "name": "mobile poker table has no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "200 percent page scale and reduced motion remain usable",
+      "passed": true
+    },
+    {
+      "name": "buttons have accessible names",
+      "passed": true
+    },
+    {
+      "name": "no browser console or page errors",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-1440.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/table-1440.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/showdown-1440.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-320.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-390.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-768.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-1024.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-1440.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/table-390.png",
+    "/Users/davidai/Projects/GGPoker-PlayMoney/qa-output/home-200-percent.png"
+  ]
+}

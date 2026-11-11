@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "timestamp": "2026-11-11T02:55:00.000Z",
+  "scope": "src/ and native/ runtime code",
+  "checks": [
+    { "name": "no fetch, XMLHttpRequest, WebSocket, Stripe, PayPal, deposit, withdrawal or cashier integration", "passed": true },
+    { "name": "only URL in runtime HTML is the SVG namespace in the inline favicon", "passed": true },
+    { "name": "native WebKit blocks HTTP(S) document, image, stylesheet, script, font, raw and media resources", "passed": true },
+    { "name": "native navigation policy allows only file and about schemes", "passed": true },
+    { "name": "all balances are labeled play chips and no cash-conversion path exists", "passed": true }
+  ]
+}

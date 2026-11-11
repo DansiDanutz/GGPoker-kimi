@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "timestamp": "2026-11-11T02:25:00.000Z",
+  "application": {
+    "path": "/Applications/GGPoker-PlayMoney.app",
+    "bundleId": "com.danslab.ggpokerplaymoney",
+    "sizeBytesApproximate": 504000,
+    "codeSignature": "valid on disk; satisfies its Designated Requirement"
+  },
+  "checks": [
+    { "name": "native app and WebKit processes launch", "passed": true, "evidence": "agent-desktop list-apps and list-windows" },
+    { "name": "native home accessibility tree", "passed": true, "evidence": "webarea exposes navigation, banner, main and named controls" },
+    { "name": "Poker lobby via accessibility click", "passed": true, "evidence": "Poker lobby and format tabs rendered" },
+    { "name": "table entry via accessibility click", "passed": true, "evidence": "Emerald 6-Max table rendered with hero actions" },
+    { "name": "call and fold actions", "passed": true, "evidence": "Call 20, later Call 80 and Fold acted; Next hand appeared" },
+    { "name": "completed hand in PokerCraft", "passed": true, "evidence": "Emerald 6-Max cell found in hand history" },
+    { "name": "graceful close and relaunch", "passed": true, "evidence": "new process launched by bundle ID and home heading observed" },
+    { "name": "hand history persists after restart", "passed": true, "evidence": "Emerald 6-Max cell found again in PokerCraft" },
+    { "name": "rendered screenshots", "passed": true, "evidence": "qa-output/native-home.png and qa-output/native-table.png inspected" }
+  ],
+  "notes": [
+    "Sound was exercised through Web Audio controls; no claim of an audible speaker-output measurement is made.",
+    "Offline HTTP(S) blocking is enforced by the native WebKit content rule and navigation policy. Runtime source contains no payment or remote account integration."
+  ]
+}
